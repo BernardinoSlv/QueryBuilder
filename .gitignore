@@ -3,3 +3,4 @@ vendor
 
 # files
 .phpunit.result.cache
+index.php
