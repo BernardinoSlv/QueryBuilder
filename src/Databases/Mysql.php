@@ -59,6 +59,11 @@ class Mysql implements DatabaseInterface
         return $this;
     }
 
+    public function getWhereBindValues(): array
+    {
+        return $this->whereBindValues;
+    }
+
     public function getSql(): string
     {
         $sql = $this->base;

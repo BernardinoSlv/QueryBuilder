@@ -14,5 +14,7 @@ interface DatabaseInterface
 
     public function limit(int $limit, ?int $offset = null): self;
 
+    public function getWhereBindValues(): array;
+
     public function getSql(): string;
 }

@@ -12,17 +12,17 @@ interface QueryBuilderInterface
      * @param integer $id
      * @return self
      */
-    public function find(int $id): self;
+    public function find(int $id): static;
 
-    public function first(): self;
+    public function first(): static;
 
-    public function table(string $table): self;
+    public function table(string $table): static;
 
-    public function select(array|string $columns = "*"): self;
+    public function select(array|string $columns = "*"): static;
 
-    public function where(string $column, int|string|null $value, string $operator = "="): self;
+    public function where(string $column, int|string|null $value, string $operator = "="): static;
 
-    public function limit(int $limit, ?int $offset = null): self;
+    public function limit(int $limit, ?int $offset = null): static;
 
     public function getSql(): string;
 }

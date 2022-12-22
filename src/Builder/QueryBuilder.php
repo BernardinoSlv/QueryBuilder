@@ -15,38 +15,38 @@ class QueryBuilder implements QueryBuilderInterface
         $this->database = $database;
     }
 
-    public function first(): QueryBuilderInterface
+    public function first(): static
     {
         $this->database->limit(1);
         return $this;
     }
 
-    public function find(int $id): QueryBuilderInterface
+    public function find(int $id): static
     {
         $this->database->where("id", $id)
             ->limit(1);
         return $this;
     }
 
-    public function table(string $table): QueryBuilderInterface
+    public function table(string $table): static
     {
         $this->database->table($table);
         return $this;
     }
 
-    public function select(array|string $columns = "*"): QueryBuilderInterface
+    public function select(array|string $columns = "*"): static
     {
         $this->database->select($columns);
         return $this;
     }
 
-    public function where(string $column, int|string|null $value, string $operator = "="): QueryBuilderInterface
+    public function where(string $column, int|string|null $value, string $operator = "="): static
     {
         $this->database->where($column, $value, $operator);
         return $this;
     }
 
-    public function limit(int $limit, ?int $offset = null): QueryBuilderInterface
+    public function limit(int $limit, ?int $offset = null): static
     {
         $this->database->limit($limit, $offset);
         return $this;
