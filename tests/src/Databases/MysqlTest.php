@@ -2,6 +2,7 @@
 
 namespace BernardinoSlv\QueryBuilder\Databases;
 
+use BernardinoSlv\QueryBuilder\Exceptions\MethodNotAllowed;
 use PHPUnit\Framework\TestCase;
 
 class MysqlTest extends TestCase
@@ -173,5 +174,86 @@ class MysqlTest extends TestCase
 
         $this->assertInstanceOf(DatabaseInterface::class, $mysql);
         $this->assertEquals("SELECT `name`, `email`, `year` FROM `users` WHERE `is_admin` != ? AND `email` != ? AND `status` = ? LIMIT 20, 100", $mysql->getSql());
+    }
+
+    public function testCreate()
+    {
+        $mysql = $this->mysql->table("user")
+            ->create([
+                "name" => "Bernardino",
+                "email" => "bernardinoosilvaa@gmail.com",
+            ]);
+
+        $this->assertEquals("INSERT INTO `user` (`name`, `email`) VALUE (?, ?)", $mysql->getSql());
+    }
+
+    public function testCreateExceptionMethodNotAllowedUsingWhereMethod()
+    {
+        $this->expectException(MethodNotAllowed::class);
+
+        $this->mysql->table("user")
+            ->create([
+                "name" => "Bernardino",
+                "email" => "bernardinoosilvaa@gmail.com",
+            ])
+            ->where("name", "Bernardino");
+    }
+
+    public function testCreateExceptionMethodNotAllowedMessageUsingWhereMethod()
+    {
+        $this->expectExceptionMessage("Método where não é permitido em queries que usam cláusula CREATE");
+        $this->mysql->table("user")
+            ->create([
+                "name" => "Bernardino",
+                "email" => "bernardinoosilvaa@gmail.com",
+            ])
+            ->where("name", "Bernardino");
+    }
+
+    public function testCreateExceptionMethodNotAllowedUsingLimitMethod()
+    {
+        $this->expectException(MethodNotAllowed::class);
+
+        $this->mysql->table("user")
+            ->create([
+                "name" => "Bernardino",
+                "email" => "bernardinoosilvaa@gmail.com"
+            ])
+            ->limit(10);
+    }
+
+    public function testCreateExceptionMethodNotAllowedMessageUsingLimitMethod()
+    {
+        $this->expectExceptionMessage("Método limit não é permitido em queries que usam cláusula CREATE");
+        $this->mysql->table("user")
+            ->create([
+                "name" => "Bernardino",
+                "email" => "bernardinoosilvaa@gmail.com",
+            ])
+            ->limit(10);
+    }
+
+    public function testCreateExceptionMethodNotAllowedUsingSelectMethod()
+    {
+        $this->expectException(MethodNotAllowed::class);
+
+        $this->mysql->table("user")
+            ->select("name", "email")
+            ->create([
+                "name" => "Bernardino",
+                "email" => "bernardinoosilvaa@gmail.com"
+            ]);
+    }
+
+    public function testCreateExceptionMethodNotAllowedMessageUsingSelectMethod()
+    {
+        $this->expectExceptionMessage("Método where não é permitido em queries que usam cláusulas SELECT, WHERE ou LIMIT");
+
+        $this->mysql->table("user")
+            ->select("name", "email")
+            ->create([
+                "name" => "Bernardino",
+                "email" => "bernardinoosilvaa@gmail.com"
+            ]);
     }
 }
